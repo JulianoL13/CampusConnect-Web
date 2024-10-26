@@ -2,27 +2,37 @@ name: Prettier Check
 
 on:
   push:
-    branches: [main, develop, ci/test]
+    branches:
+      - main
+      - developer
   pull_request:
-    branches: [main, develop]
+    branches:
+      - main
+      - developer
 
 jobs:
   prettier:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
+
         with:
-          node-version: "22.9.0"
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Prettier
-        run: |
-          npm run lint:check &&
-          npm run lint:fix
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.3
+        with:
+          same_commit: true #ensures that the pipeline does not overwrite the current commit
+          prettier_version: 3.3.3
+          prettier_options: --write **/*.{js,jsx,ts,tsx,json,md,css}
+          github_token: ${{ secrets.GITHUBTOKEN }}
