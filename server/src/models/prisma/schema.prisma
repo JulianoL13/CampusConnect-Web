@@ -36,6 +36,7 @@ model Profile {
   userId Int @unique
 
   user User @relation(fields: [userId], references: [id])
+  posts Post[]
 }
 
 model Post {
@@ -44,5 +45,11 @@ model Post {
   text String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
+  author  Profile @relation(fields: [profileId], references: [id])
+  profileId Int
+}
+
+model Community{
+  id Int @id @default(autoincrement())
 }
