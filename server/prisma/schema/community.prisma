@@ -1,4 +1,4 @@
-model Community{
+model Community {
     id Int @id @default(autoincrement())
     name String
     description String
