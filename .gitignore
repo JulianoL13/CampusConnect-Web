@@ -1,0 +1,23 @@
+# Ignore the TypeScript output folder
+dist/
+
+# Ignore the Node modules folder
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore environment files (e.g., .env)
+.env
+
+# Ignore TypeScript configuration files
+*.tsbuildinfo
+
+# Ignore editor cache files (e.g., VS Code)
+.vscode/
+.idea/
+.DS_Store
+
+# Ignore TypeScript compilation files
+*.js
+*.js.map
