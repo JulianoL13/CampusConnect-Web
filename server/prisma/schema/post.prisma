@@ -21,7 +21,10 @@ model Comment {
 
     profile Profile @relation(fields: [profileId], references: [id])
     profileId Int
-    comment Post @relation(fields: [postId], references: [id])
+    post Post @relation(fields: [postId], references: [id])
+    parentId  Int?  
+    parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+    replies   Comment[] @relation("CommentReplies")
     postId Int
     commentVotes CommentVote[]
 }
