@@ -1,7 +1,7 @@
 import prisma from "../models/prisma";
 import { Post } from "@prisma/client";
 
-export class UserRepository {
+export class postRepository {
   async getAllPost(): Promise<Post[]> {
     return await prisma.post.findMany();
   }
