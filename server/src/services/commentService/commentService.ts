@@ -8,6 +8,16 @@ export class CommentService {
     this.commentRepository = commentRepository;
   }
 
+  async fetchCommentsWithCursor(
+    lastCommentId?: number,
+    pageSize: number = 10,
+  ): Promise<{ comments: Comment[]; nextCursor: number | null }> {
+    const { items: comments, nextCursor } =
+      await this.commentRepository.getPaginatedComment(lastCommentId, pageSize);
+
+    return { comments, nextCursor };
+  }
+
   async getAllComments(): Promise<Comment[]> {
     return this.commentRepository.getAllComments();
   }
