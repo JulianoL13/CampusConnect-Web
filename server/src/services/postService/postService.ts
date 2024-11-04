@@ -8,69 +8,61 @@ export class PostService {
     this.postRepository = postRepository;
   }
 
-  async fetchPostsWithCursor(
+  fetchPostsWithCursor = async (
     lastPostId?: number,
     pageSize: number = 10,
-  ): Promise<{ posts: Post[]; nextCursor: number | null }> {
+  ): Promise<{ posts: Post[]; nextCursor: number | null }> => {
     const { items: posts, nextCursor } =
-      await this.postRepository.getPaginatedPosts(
-        lastPostId,
-
-        pageSize,
-      );
+      await this.postRepository.getPaginatedPosts(lastPostId, pageSize);
 
     return { posts, nextCursor };
-  }
+  };
 
-  async getAllPosts(): Promise<Post[]> {
+  getAllPosts = async (): Promise<Post[]> => {
     return this.postRepository.getAllPosts();
-  }
+  };
 
-  async getPostById(id: number): Promise<Post | null> {
+  getPostById = async (id: number): Promise<Post | null> => {
     return this.postRepository.getPostById(id);
-  }
+  };
 
-  async createPost(data: {
+  createPost = async (data: {
     title: string;
-
     text: string;
-
     profileId: number;
-
     communityId: number;
-  }): Promise<Post> {
+  }): Promise<Post> => {
     return this.postRepository.createPost(data);
-  }
+  };
 
-  async updatePost(
+  updatePost = async (
     id: number,
-
     data: { title?: string; text?: string },
-  ): Promise<Post> {
+  ): Promise<Post> => {
     return this.postRepository.updatePost(id, data);
-  }
+  };
 
-  async deletePost(id: number): Promise<Post> {
+  deletePost = async (id: number): Promise<Post> => {
     return this.postRepository.deletePost(id);
-  }
+  };
 
-  async getPostsByProfileId(profileId: number): Promise<Post[]> {
+  getPostsByProfileId = async (profileId: number): Promise<Post[]> => {
     return this.postRepository.getPostsByProfileId(profileId);
-  }
+  };
 
-  async getPostsByCommunityId(communityId: number): Promise<Post[]> {
+  getPostsByCommunityId = async (communityId: number): Promise<Post[]> => {
     return this.postRepository.getPostsByCommunityId(communityId);
-  }
+  };
 
-  async searchPosts(query: string): Promise<Post[]> {
+  searchPosts = async (query: string): Promise<Post[]> => {
     return this.postRepository.searchPosts(query);
-  }
+  };
 
-  async countPostsByProfileId(profileId: number): Promise<number> {
+  countPostsByProfileId = async (profileId: number): Promise<number> => {
     return this.postRepository.countPostsByProfileId(profileId);
-  }
+  };
 
-  async countPostsByCommunityId(communityId: number): Promise<number> {
+  countPostsByCommunityId = async (communityId: number): Promise<number> => {
     return this.postRepository.countPostsByCommunityId(communityId);
-  }
+  };
 }

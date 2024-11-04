@@ -12,31 +12,26 @@ const postController = new PostController(postService);
 
 const router = Router();
 
-router.get("/posts", postController.getAllPosts.bind(postController));
-router.get("/posts/:id", postController.getPostById.bind(postController));
-router.get(
-  "/posts/profile/:profileId",
-  postController.getPostsByProfileId.bind(postController),
+router.get("/posts", (req, res) => postController.getAllPosts(req, res));
+router.get("/posts/:id", (req, res) => postController.getPostById(req, res));
+router.get("/posts/profile/:profileId", (req, res) =>
+  postController.getPostsByProfileId(req, res),
 );
-router.get(
-  "/posts/community/:communityId",
-  postController.getPostsByCommunityId.bind(postController),
+router.get("/posts/community/:communityId", (req, res) =>
+  postController.getPostsByCommunityId(req, res),
 );
-router.get("/posts/search", postController.searchPosts.bind(postController));
-router.get(
-  "/posts/count/profile/:profileId",
-  postController.countPostsByProfileId.bind(postController),
+router.get("/posts/search", (req, res) => postController.searchPosts(req, res));
+router.get("/posts/count/profile/:profileId", (req, res) =>
+  postController.countPostsByProfileId(req, res),
 );
-router.get(
-  "/posts/count/community/:communityId",
-  postController.countPostsByCommunityId.bind(postController),
+router.get("/posts/count/community/:communityId", (req, res) =>
+  postController.countPostsByCommunityId(req, res),
 );
-router.post("/posts", postController.createPost.bind(postController));
-router.put("/posts/:id", postController.updatePost.bind(postController));
-router.delete("/posts/:id", postController.deletePost.bind(postController));
-router.get(
-  "/posts/cursor",
-  postController.fetchPostsWithCursor.bind(postController),
+router.post("/posts", (req, res) => postController.createPost(req, res));
+router.put("/posts/:id", (req, res) => postController.updatePost(req, res));
+router.delete("/posts/:id", (req, res) => postController.deletePost(req, res));
+router.get("/posts/cursor", (req, res) =>
+  postController.fetchPostsWithCursor(req, res),
 );
 
 export default router;

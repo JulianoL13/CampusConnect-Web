@@ -14,35 +14,41 @@ export class PostVoteService {
     this.postVoteRepository = postVoteRepository;
   }
 
-  async countVotesByPostId(postId: number) {
+  countVotesByPostId = async (postId: number) => {
     const { upvotes, downvotes } =
       await this.postVoteRepository.countVotesByPostId(postId);
     return { upvotes, downvotes };
-  }
+  };
 
-  private isDuplicateVote(existingVote: boolean, newVote: boolean): boolean {
+  private isDuplicateVote = (
+    existingVote: boolean,
+    newVote: boolean,
+  ): boolean => {
     return existingVote === newVote;
-  }
+  };
 
-  private async removeVote(userId: number, postId: number): Promise<null> {
+  private removeVote = async (
+    userId: number,
+    postId: number,
+  ): Promise<null> => {
     await this.postVoteRepository.deleteVote(userId, postId);
     return null;
-  }
+  };
 
-  private async updateExistingVote(
+  private updateExistingVote = async (
     voteId: number,
     newVote: boolean,
-  ): Promise<PostVote> {
+  ): Promise<PostVote> => {
     return this.postVoteRepository.updateVote(voteId, {
       postVote: newVote,
     });
-  }
+  };
 
-  private async createNewVote(data: VoteData): Promise<PostVote> {
+  private createNewVote = async (data: VoteData): Promise<PostVote> => {
     return this.postVoteRepository.votePost(data);
-  }
+  };
 
-  async toggleVoteOnPost(data: VoteData): Promise<PostVote | null> {
+  toggleVoteOnPost = async (data: VoteData): Promise<PostVote | null> => {
     const { userId, postId, postVote } = data;
 
     const existingVote = await this.postVoteRepository.getVoteByUserAndPostId(
@@ -58,13 +64,13 @@ export class PostVoteService {
     } else {
       return await this.createNewVote(data);
     }
-  }
+  };
 
-  async hasUserVoted(postId: number, userId: number): Promise<boolean> {
+  hasUserVoted = async (postId: number, userId: number): Promise<boolean> => {
     const existingVote = await this.postVoteRepository.getVoteByUserAndPostId(
       postId,
       userId,
     );
     return existingVote !== null;
-  }
+  };
 }

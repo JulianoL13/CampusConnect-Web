@@ -3,13 +3,15 @@ import { Request, Response } from "express";
 
 export class CommentController {
   private commentService: CommentService;
+
   constructor(commentService: CommentService) {
     this.commentService = commentService;
   }
-  public async fetchCommentsWithCursor(
+
+  fetchCommentsWithCursor = async (
     req: Request,
     res: Response,
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const lastCommentId = req.query.lastCommentId
         ? parseInt(req.query.lastCommentId as string, 10)
@@ -30,9 +32,9 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getAllComments(req: Request, res: Response): Promise<void> {
+  getAllComments = async (req: Request, res: Response): Promise<void> => {
     try {
       const comments = await this.commentService.getAllComments();
       res.status(200).json(comments);
@@ -43,12 +45,12 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getCommentsByProfileId(
+  getCommentsByProfileId = async (
     req: Request,
     res: Response,
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const profileId = parseInt(req.params.profileId, 10);
       const comments =
@@ -61,9 +63,9 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getCommentsByPostId(req: Request, res: Response): Promise<void> {
+  getCommentsByPostId = async (req: Request, res: Response): Promise<void> => {
     try {
       const postId = parseInt(req.params.postId, 10);
       const comments = await this.commentService.getCommentsByPostId(postId);
@@ -75,9 +77,9 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async fetchChildComments(req: Request, res: Response): Promise<void> {
+  fetchChildComments = async (req: Request, res: Response): Promise<void> => {
     try {
       const parentCommentId = parseInt(req.params.parentCommentId, 10);
       const includeReplies = req.query.includeReplies === "true";
@@ -93,12 +95,12 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async countCommentsByPostId(
+  countCommentsByPostId = async (
     req: Request,
     res: Response,
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const postId = parseInt(req.params.postId, 10);
       const count = await this.commentService.countCommentsByPostId(postId);
@@ -110,9 +112,9 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async countChildComments(req: Request, res: Response): Promise<void> {
+  countChildComments = async (req: Request, res: Response): Promise<void> => {
     try {
       const parentCommentId = parseInt(req.params.parentCommentId, 10);
       const count =
@@ -125,9 +127,9 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async createComment(req: Request, res: Response): Promise<void> {
+  createComment = async (req: Request, res: Response): Promise<void> => {
     try {
       const commentData = req.body;
       const comment = await this.commentService.createComment(commentData);
@@ -139,8 +141,9 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
-  public async updateComment(req: Request, res: Response): Promise<void> {
+  };
+
+  updateComment = async (req: Request, res: Response): Promise<void> => {
     try {
       const commentId = parseInt(req.params.id, 10);
       const commentData = req.body;
@@ -160,9 +163,9 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async deleteComment(req: Request, res: Response): Promise<void> {
+  deleteComment = async (req: Request, res: Response): Promise<void> => {
     try {
       const commentId = parseInt(req.params.id, 10);
       const deletedComment = await this.commentService.deleteComment(commentId);
@@ -170,7 +173,7 @@ export class CommentController {
         res.status(404).json({ message: "Comment not found" });
         return;
       }
-      res.status(204).send(); // No content
+      res.status(204).send();
     } catch (error: unknown) {
       if (error instanceof Error) {
         res.status(400).json({ message: error.message });
@@ -178,12 +181,12 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getCommentsWithReplies(
+  getCommentsWithReplies = async (
     req: Request,
     res: Response,
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const postId = parseInt(req.params.postId, 10);
       const comments = await this.commentService.getCommentsWithReplies(postId);
@@ -195,5 +198,5 @@ export class CommentController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 }

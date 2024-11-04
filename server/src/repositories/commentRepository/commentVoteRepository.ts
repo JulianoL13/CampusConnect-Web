@@ -3,25 +3,29 @@ import { CommentVote } from "@prisma/client";
 
 export class CommentVoteRepository {
   constructor() {}
-  async voteComment(voteData: {
+
+  voteComment = async (voteData: {
     userId: number;
     commentId: number;
     commentVote: boolean;
-  }): Promise<CommentVote> {
+  }): Promise<CommentVote> => {
     return await prisma.commentVote.create({ data: voteData });
-  }
+  };
 
-  async updateVote(
+  updateVote = async (
     id: number,
     newVoteData: { commentVote: boolean },
-  ): Promise<CommentVote> {
+  ): Promise<CommentVote> => {
     return await prisma.commentVote.update({
       where: { id },
       data: newVoteData,
     });
-  }
+  };
 
-  async deleteVote(userId: number, commentId: number): Promise<CommentVote> {
+  deleteVote = async (
+    userId: number,
+    commentId: number,
+  ): Promise<CommentVote> => {
     return await prisma.commentVote.delete({
       where: {
         userId_commentId: {
@@ -30,16 +34,16 @@ export class CommentVoteRepository {
         },
       },
     });
-  }
+  };
 
-  async getVotesByCommentId(commentId: number): Promise<CommentVote[]> {
+  getVotesByCommentId = async (commentId: number): Promise<CommentVote[]> => {
     return await prisma.commentVote.findMany({ where: { commentId } });
-  }
+  };
 
-  async getVoteByUserAndCommentId(
+  getVoteByUserAndCommentId = async (
     commentId: number,
     userId: number,
-  ): Promise<CommentVote | null> {
+  ): Promise<CommentVote | null> => {
     return await prisma.commentVote.findUnique({
       where: {
         userId_commentId: {
@@ -48,11 +52,11 @@ export class CommentVoteRepository {
         },
       },
     });
-  }
+  };
 
-  async countVotesByCommentId(
+  countVotesByCommentId = async (
     commentId: number,
-  ): Promise<{ upvotes: number; downvotes: number }> {
+  ): Promise<{ upvotes: number; downvotes: number }> => {
     const upvotes = await prisma.commentVote.count({
       where: { commentId, commentVote: true },
     });
@@ -62,5 +66,5 @@ export class CommentVoteRepository {
     });
 
     return { upvotes, downvotes };
-  }
+  };
 }

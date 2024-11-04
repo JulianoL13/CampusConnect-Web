@@ -9,60 +9,60 @@ export class PostRepository {
     this.itemFetcher = itemFetcher;
   }
 
-  async getAllPosts(): Promise<Post[]> {
+  getAllPosts = async (): Promise<Post[]> => {
     return await prisma.post.findMany();
-  }
+  };
 
-  async getPaginatedPosts(
+  getPaginatedPosts = async (
     lastPostId?: number,
     pageSize: number = 10,
-  ): Promise<{ items: Post[]; nextCursor: number | null }> {
+  ): Promise<{ items: Post[]; nextCursor: number | null }> => {
     return await getPaginatedItems(
       this.itemFetcher,
       "post",
       lastPostId,
       pageSize,
     );
-  }
+  };
 
-  async getPostById(id: number): Promise<Post | null> {
+  getPostById = async (id: number): Promise<Post | null> => {
     return await prisma.post.findUnique({ where: { id } });
-  }
+  };
 
-  async createPost(data: {
+  createPost = async (data: {
     title: string;
     text: string;
     profileId: number;
     communityId: number;
-  }): Promise<Post> {
+  }): Promise<Post> => {
     return await prisma.post.create({ data });
-  }
+  };
 
-  async updatePost(
+  updatePost = async (
     id: number,
     data: { title?: string; text?: string },
-  ): Promise<Post> {
+  ): Promise<Post> => {
     return prisma.post.update({
       where: { id },
       data: {
         ...data,
       },
     });
-  }
+  };
 
-  async deletePost(id: number): Promise<Post> {
+  deletePost = async (id: number): Promise<Post> => {
     return await prisma.post.delete({ where: { id } });
-  }
+  };
 
-  async getPostsByProfileId(profileId: number): Promise<Post[]> {
+  getPostsByProfileId = async (profileId: number): Promise<Post[]> => {
     return await prisma.post.findMany({ where: { profileId } });
-  }
+  };
 
-  async getPostsByCommunityId(communityId: number): Promise<Post[]> {
+  getPostsByCommunityId = async (communityId: number): Promise<Post[]> => {
     return await prisma.post.findMany({ where: { communityId } });
-  }
+  };
 
-  async searchPosts(query: string): Promise<Post[]> {
+  searchPosts = async (query: string): Promise<Post[]> => {
     return await prisma.post.findMany({
       where: {
         OR: [
@@ -71,16 +71,13 @@ export class PostRepository {
         ],
       },
     });
-  }
+  };
 
-  async countPostsByProfileId(profileId: number): Promise<number> {
+  countPostsByProfileId = async (profileId: number): Promise<number> => {
     return await prisma.post.count({ where: { profileId } });
-  }
+  };
 
-  async countPostsByCommunityId(communityId: number): Promise<number> {
+  countPostsByCommunityId = async (communityId: number): Promise<number> => {
     return await prisma.post.count({ where: { communityId } });
-  }
+  };
 }
-
-const itemFetcher = new ItemFetcher(prisma);
-const postRepository = new PostRepository(itemFetcher);

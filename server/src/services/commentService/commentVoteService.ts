@@ -13,35 +13,42 @@ export class CommentVoteService {
   constructor(commentVoteRepository: CommentVoteRepository) {
     this.commentVoteRepository = commentVoteRepository;
   }
-  async countVotesByCommentId(commentId: number) {
+
+  countVotesByCommentId = async (commentId: number) => {
     const { upvotes, downvotes } =
       await this.commentVoteRepository.countVotesByCommentId(commentId);
     return { upvotes, downvotes };
-  }
+  };
 
-  private isDuplicateVote(existingVote: boolean, newVote: boolean): boolean {
+  private isDuplicateVote = (
+    existingVote: boolean,
+    newVote: boolean,
+  ): boolean => {
     return existingVote === newVote;
-  }
+  };
 
-  private async removeVote(userId: number, commentId: number): Promise<null> {
+  private removeVote = async (
+    userId: number,
+    commentId: number,
+  ): Promise<null> => {
     await this.commentVoteRepository.deleteVote(userId, commentId);
     return null;
-  }
+  };
 
-  private async updateExistingVote(
+  private updateExistingVote = async (
     voteId: number,
     newVote: boolean,
-  ): Promise<CommentVote> {
+  ): Promise<CommentVote> => {
     return this.commentVoteRepository.updateVote(voteId, {
       commentVote: newVote,
     });
-  }
+  };
 
-  private async createNewVote(data: VoteData): Promise<CommentVote> {
+  private createNewVote = async (data: VoteData): Promise<CommentVote> => {
     return this.commentVoteRepository.voteComment(data);
-  }
+  };
 
-  async toggleVoteOnComment(data: VoteData): Promise<CommentVote | null> {
+  toggleVoteOnComment = async (data: VoteData): Promise<CommentVote | null> => {
     const { userId, commentId, commentVote } = data;
 
     const existingVote =
@@ -58,14 +65,17 @@ export class CommentVoteService {
     } else {
       return await this.createNewVote(data);
     }
-  }
+  };
 
-  async hasUserVoted(commentId: number, userId: number): Promise<boolean> {
+  hasUserVoted = async (
+    commentId: number,
+    userId: number,
+  ): Promise<boolean> => {
     const existingVote =
       await this.commentVoteRepository.getVoteByUserAndCommentId(
         commentId,
         userId,
       );
     return existingVote !== null;
-  }
+  };
 }

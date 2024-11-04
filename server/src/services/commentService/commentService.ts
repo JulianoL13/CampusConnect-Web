@@ -8,64 +8,67 @@ export class CommentService {
     this.commentRepository = commentRepository;
   }
 
-  async fetchCommentsWithCursor(
+  fetchCommentsWithCursor = async (
     lastCommentId?: number,
     pageSize: number = 10,
-  ): Promise<{ comments: Comment[]; nextCursor: number | null }> {
+  ): Promise<{ comments: Comment[]; nextCursor: number | null }> => {
     const { items: comments, nextCursor } =
       await this.commentRepository.getPaginatedComment(lastCommentId, pageSize);
 
     return { comments, nextCursor };
-  }
+  };
 
-  async getAllComments(): Promise<Comment[]> {
+  getAllComments = async (): Promise<Comment[]> => {
     return this.commentRepository.getAllComments();
-  }
+  };
 
-  async getCommentsByProfileId(profileId: number): Promise<Comment[]> {
+  getCommentsByProfileId = async (profileId: number): Promise<Comment[]> => {
     return this.commentRepository.getCommentsByProfileId(profileId);
-  }
+  };
 
-  async getCommentsByPostId(postId: number): Promise<Comment[]> {
+  getCommentsByPostId = async (postId: number): Promise<Comment[]> => {
     return this.commentRepository.getCommentsByPostId(postId);
-  }
+  };
 
-  async fetchChildComments(
+  fetchChildComments = async (
     parentCommentId: number,
     includeReplies: boolean = false,
-  ): Promise<Comment[]> {
+  ): Promise<Comment[]> => {
     return this.commentRepository.getChildComments(
       parentCommentId,
       includeReplies,
     );
-  }
+  };
 
-  async createComment(data: {
+  createComment = async (data: {
     text: string;
     postId: number;
     profileId: number;
     parentId?: number;
-  }): Promise<Comment> {
+  }): Promise<Comment> => {
     return this.commentRepository.createComment(data);
-  }
+  };
 
-  async countCommentsByPostId(postId: number): Promise<number> {
+  countCommentsByPostId = async (postId: number): Promise<number> => {
     return this.commentRepository.countCommentsByPostId(postId);
-  }
+  };
 
-  async countChildComments(parentCommentId: number): Promise<number> {
+  countChildComments = async (parentCommentId: number): Promise<number> => {
     return this.commentRepository.countChildComments(parentCommentId);
-  }
+  };
 
-  async updateComment(id: number, data: { text?: string }): Promise<Comment> {
+  updateComment = async (
+    id: number,
+    data: { text?: string },
+  ): Promise<Comment> => {
     return this.commentRepository.updateComment(id, data);
-  }
+  };
 
-  async deleteComment(id: number): Promise<Comment> {
+  deleteComment = async (id: number): Promise<Comment> => {
     return this.commentRepository.deleteComment(id);
-  }
+  };
 
-  async getCommentsWithReplies(postId: number): Promise<Comment[]> {
+  getCommentsWithReplies = async (postId: number): Promise<Comment[]> => {
     return this.commentRepository.getCommentsWithReplies(postId);
-  }
+  };
 }

@@ -5,8 +5,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/**/*", "swaggerOptions.ts", "docs/**/*"],
   "exclude": ["node_modules"]
 }

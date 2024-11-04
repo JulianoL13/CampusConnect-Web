@@ -4,37 +4,39 @@ import { ItemFetcher, getPaginatedItems } from "../../utils/pagination";
 
 export class CommentRepository {
   private itemFetcher: ItemFetcher;
+
   constructor(itemFetcher: ItemFetcher) {
     this.itemFetcher = itemFetcher;
   }
-  async getAllComments(): Promise<Comment[]> {
-    return await prisma.comment.findMany();
-  }
 
-  async getPaginatedComment(
+  getAllComments = async (): Promise<Comment[]> => {
+    return await prisma.comment.findMany();
+  };
+
+  getPaginatedComment = async (
     lastCommentId?: number,
     pageSize: number = 10,
-  ): Promise<{ items: Comment[]; nextCursor: number | null }> {
+  ): Promise<{ items: Comment[]; nextCursor: number | null }> => {
     return await getPaginatedItems(
       this.itemFetcher,
       "comment",
       lastCommentId,
       pageSize,
     );
-  }
+  };
 
-  async getCommentsByProfileId(profileId: number): Promise<Comment[]> {
+  getCommentsByProfileId = async (profileId: number): Promise<Comment[]> => {
     return await prisma.comment.findMany({ where: { profileId } });
-  }
+  };
 
-  async getCommentsByPostId(postId: number): Promise<Comment[]> {
+  getCommentsByPostId = async (postId: number): Promise<Comment[]> => {
     return await prisma.comment.findMany({ where: { postId } });
-  }
+  };
 
-  async getChildComments(
+  getChildComments = async (
     parentCommentId: number,
     includeReplies: boolean = false,
-  ): Promise<Comment[]> {
+  ): Promise<Comment[]> => {
     return await prisma.comment.findMany({
       where: { parentId: parentCommentId },
       include: {
@@ -43,39 +45,42 @@ export class CommentRepository {
         ...(includeReplies && { replies: true }),
       },
     });
-  }
+  };
 
-  async countCommentsByPostId(postId: number): Promise<number> {
+  countCommentsByPostId = async (postId: number): Promise<number> => {
     return await prisma.comment.count({ where: { postId } });
-  }
+  };
 
-  async countChildComments(parentCommentId: number): Promise<number> {
+  countChildComments = async (parentCommentId: number): Promise<number> => {
     return await prisma.comment.count({ where: { parentId: parentCommentId } });
-  }
+  };
 
-  async createComment(data: {
+  createComment = async (data: {
     text: string;
     postId: number;
     profileId: number;
     parentId?: number;
-  }): Promise<Comment> {
+  }): Promise<Comment> => {
     return await prisma.comment.create({ data });
-  }
+  };
 
-  async updateComment(id: number, data: { text?: string }): Promise<Comment> {
+  updateComment = async (
+    id: number,
+    data: { text?: string },
+  ): Promise<Comment> => {
     return prisma.comment.update({
       where: { id },
       data: {
         ...data,
       },
     });
-  }
+  };
 
-  async deleteComment(id: number): Promise<Comment> {
+  deleteComment = async (id: number): Promise<Comment> => {
     return await prisma.comment.delete({ where: { id } });
-  }
+  };
 
-  async getCommentsWithReplies(postId: number) {
+  getCommentsWithReplies = async (postId: number) => {
     const comments = await prisma.comment.findMany({
       where: {
         postId: postId,
@@ -91,7 +96,5 @@ export class CommentRepository {
       },
     });
     return comments;
-  }
+  };
 }
-const itemFetcher = new ItemFetcher(prisma);
-const postRepository = new CommentRepository(itemFetcher);

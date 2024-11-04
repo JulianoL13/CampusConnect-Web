@@ -4,25 +4,25 @@ import { PostVote } from "@prisma/client";
 export class PostVoteRepository {
   constructor() {}
 
-  async votePost(voteData: {
+  votePost = async (voteData: {
     userId: number;
     postId: number;
     postVote: boolean;
-  }): Promise<PostVote> {
+  }): Promise<PostVote> => {
     return await prisma.postVote.create({ data: voteData });
-  }
+  };
 
-  async updateVote(
+  updateVote = async (
     id: number,
     newVoteData: { postVote: boolean },
-  ): Promise<PostVote> {
+  ): Promise<PostVote> => {
     return await prisma.postVote.update({
       where: { id },
       data: newVoteData,
     });
-  }
+  };
 
-  async deleteVote(userId: number, postId: number): Promise<PostVote> {
+  deleteVote = async (userId: number, postId: number): Promise<PostVote> => {
     return await prisma.postVote.delete({
       where: {
         userId_postId: {
@@ -31,16 +31,16 @@ export class PostVoteRepository {
         },
       },
     });
-  }
+  };
 
-  async getVotesByPostId(postId: number): Promise<PostVote[]> {
+  getVotesByPostId = async (postId: number): Promise<PostVote[]> => {
     return await prisma.postVote.findMany({ where: { postId } });
-  }
+  };
 
-  async getVoteByUserAndPostId(
+  getVoteByUserAndPostId = async (
     postId: number,
     userId: number,
-  ): Promise<PostVote | null> {
+  ): Promise<PostVote | null> => {
     return await prisma.postVote.findUnique({
       where: {
         userId_postId: {
@@ -49,19 +49,19 @@ export class PostVoteRepository {
         },
       },
     });
-  }
+  };
 
-  async countVotesByPostId(
+  countVotesByPostId = async (
     postId: number,
-  ): Promise<{ upvotes: number; downvotes: number }> {
+  ): Promise<{ upvotes: number; downvotes: number }> => {
     const upvotes = await prisma.postVote.count({
-      where: { postId, postVote: true }, // Altere 'vote' para 'postVote'
+      where: { postId, postVote: true },
     });
 
     const downvotes = await prisma.postVote.count({
-      where: { postId, postVote: false }, // Altere 'vote' para 'postVote'
+      where: { postId, postVote: false },
     });
 
     return { upvotes, downvotes };
-  }
+  };
 }

@@ -7,10 +7,8 @@ export class PostController {
   constructor(postService: PostService) {
     this.postService = postService;
   }
-  public async fetchPostsWithCursor(
-    req: Request,
-    res: Response,
-  ): Promise<void> {
+
+  fetchPostsWithCursor = async (req: Request, res: Response): Promise<void> => {
     try {
       const lastPostId = req.query.lastPostId
         ? parseInt(req.query.lastPostId as string, 10)
@@ -30,9 +28,9 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async createPost(req: Request, res: Response): Promise<void> {
+  createPost = async (req: Request, res: Response): Promise<void> => {
     try {
       const postData = req.body;
       const newPost = await this.postService.createPost(postData);
@@ -44,9 +42,9 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async updatePost(req: Request, res: Response): Promise<void> {
+  updatePost = async (req: Request, res: Response): Promise<void> => {
     try {
       const postId = parseInt(req.params.id, 10);
       const postData = req.body;
@@ -63,9 +61,9 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async deletePost(req: Request, res: Response): Promise<void> {
+  deletePost = async (req: Request, res: Response): Promise<void> => {
     try {
       const postId = parseInt(req.params.id, 10);
       const deletedPost = await this.postService.deletePost(postId);
@@ -81,9 +79,9 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getAllPosts(req: Request, res: Response): Promise<void> {
+  getAllPosts = async (req: Request, res: Response): Promise<void> => {
     try {
       const posts = await this.postService.getAllPosts();
       res.status(200).json(posts);
@@ -94,9 +92,9 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getPostById(req: Request, res: Response): Promise<void> {
+  getPostById = async (req: Request, res: Response): Promise<void> => {
     try {
       const postId = parseInt(req.params.id, 10);
       const post = await this.postService.getPostById(postId);
@@ -112,9 +110,9 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getPostsByProfileId(req: Request, res: Response): Promise<void> {
+  getPostsByProfileId = async (req: Request, res: Response): Promise<void> => {
     try {
       const profileId = parseInt(req.params.profileId, 10);
       const posts = await this.postService.getPostsByProfileId(profileId);
@@ -126,12 +124,12 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async getPostsByCommunityId(
+  getPostsByCommunityId = async (
     req: Request,
     res: Response,
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const communityId = parseInt(req.params.communityId, 10);
       const posts = await this.postService.getPostsByCommunityId(communityId);
@@ -143,9 +141,9 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async searchPosts(req: Request, res: Response): Promise<void> {
+  searchPosts = async (req: Request, res: Response): Promise<void> => {
     try {
       const query = req.query.q as string;
       const posts = await this.postService.searchPosts(query);
@@ -157,12 +155,12 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async countPostsByProfileId(
+  countPostsByProfileId = async (
     req: Request,
     res: Response,
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const profileId = parseInt(req.params.profileId, 10);
       const count = await this.postService.countPostsByProfileId(profileId);
@@ -174,12 +172,12 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 
-  public async countPostsByCommunityId(
+  countPostsByCommunityId = async (
     req: Request,
     res: Response,
-  ): Promise<void> {
+  ): Promise<void> => {
     try {
       const communityId = parseInt(req.params.communityId, 10);
       const count = await this.postService.countPostsByCommunityId(communityId);
@@ -191,5 +189,5 @@ export class PostController {
         res.status(500).json({ message: "An unknown error occurred" });
       }
     }
-  }
+  };
 }
