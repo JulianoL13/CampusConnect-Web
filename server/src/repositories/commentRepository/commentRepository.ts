@@ -58,15 +58,11 @@ export class CommentRepository {
     postId: number;
     profileId: number;
     parentId?: number;
-    communityId: number;
   }): Promise<Comment> {
     return await prisma.comment.create({ data });
   }
 
-  async updateComment(
-    id: number,
-    data: { title?: string; text?: string },
-  ): Promise<Comment> {
+  async updateComment(id: number, data: { text?: string }): Promise<Comment> {
     return prisma.comment.update({
       where: { id },
       data: {

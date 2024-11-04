@@ -45,7 +45,6 @@ export class CommentService {
     postId: number;
     profileId: number;
     parentId?: number;
-    communityId: number;
   }): Promise<Comment> {
     return this.commentRepository.createComment(data);
   }
@@ -58,10 +57,7 @@ export class CommentService {
     return this.commentRepository.countChildComments(parentCommentId);
   }
 
-  async updateComment(
-    id: number,
-    data: { title?: string; text?: string },
-  ): Promise<Comment> {
+  async updateComment(id: number, data: { text?: string }): Promise<Comment> {
     return this.commentRepository.updateComment(id, data);
   }
 
