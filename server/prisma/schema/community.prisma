@@ -1,0 +1,20 @@
+model Community {
+    id Int @id @default(autoincrement())
+    name String
+    description String
+    createdAt DateTime @default(now())
+    memberAmount Int  @default(0)
+
+    users UserCommunitys[]
+    posts Post[]
+    course Course?
+}
+
+model UserCommunitys {
+    user User @relation(fields: [userId], references: [id])
+    userId Int
+    community Community @relation(fields: [communityID], references: [id])
+    communityID Int
+
+    @@id([userId, communityID])
+}
