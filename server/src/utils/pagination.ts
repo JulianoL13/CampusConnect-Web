@@ -38,7 +38,7 @@ export class ItemFetcher {
         commonArgs,
       )) as ModelReturnType<T>[];
     } else {
-      throw new Error("Modelo não suportado");
+      throw new Error("Model not supported");
     }
   }
 }
@@ -62,7 +62,7 @@ export async function getPaginatedItems<T extends ModelNames>(
 
     return { items, nextCursor };
   } catch (error) {
-    console.error("Erro ao buscar itens paginados:", error);
-    throw new Error("Falha ao buscar itens");
+    console.error("Error when searching for paginated items:", error);
+    throw new Error("Failed to search for items");
   }
 }
