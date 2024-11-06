@@ -1,0 +1,25 @@
+# Ignore build
+build/
+dist/
+out/
+
+# Ignore config
+.prettierrc
+.prettierignore
+.editorconfig
+
+# Ignore dependencies
+node_modules/
+
+# Ignore doc
+*.md
+
+# Ignore tests
+*.test.js
+*.spec.js
+
+# Ignore minis
+*.min.js
+
+# Ignore locks
+*.lock
