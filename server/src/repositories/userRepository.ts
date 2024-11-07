@@ -10,6 +10,9 @@ export class userRepository {
     phone?: string;
     cpf: string;
     registration: string;
+    community: { connect: { id: number }[] };
+    role: { connect: { id: number } };
+    course: { connect: { id: number }[] };
   }): Promise<User> {
     return await prisma.user.create({ data });
   }

@@ -7,6 +7,9 @@ const userRepo = new userRepository();
 export type RegisterUserData = Omit<User, "id" | "createdAt" | "updatedAt"> & {
   birthDate?: Date;
   phone?: string;
+  community: { connect: { id: number }[] };
+  role: { connect: { id: number } };
+  course: { connect: { id: number }[] };
 };
 
 export async function register(userData: RegisterUserData) {
