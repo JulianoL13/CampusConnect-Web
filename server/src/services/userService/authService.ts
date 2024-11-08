@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import { userRepository } from "../../repositories/userRepository";
 import { User } from "@prisma/client";
 
@@ -26,12 +27,17 @@ export async function register(userData: RegisterUserData) {
   return await userRepo.createUser(userData);
 }
 
-export async function login(email: string, password: string): Promise<User> {
+export async function login(email: string, password: string) {
   const user = await userRepo.findUserByEmail(email);
   if (!user) throw new Error("Usuário não encontrado");
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) throw new Error("Senha inválida");
 
-  return user;
+  const token = jwt.sign(
+    { userId: user.id, email: user.email },
+    process.env.JWT_SECRET!,
+    { expiresIn: process.env.JWT_EXPIRES_IN },
+  );
+  return { user, token };
 }
