@@ -1,26 +1,69 @@
-import { Request, Response } from "express";
-import * as authService from "../services/userService/authService";
+import { Request, Response, NextFunction } from "express";
+import { AuthService } from "../services/userService/authService";
 
-export async function register(req: Request, res: Response) {
-  try {
-    const user = await authService.register(req.body);
-    res.status(201).json({ message: "Usuário registrado com sucesso", user });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+type ExpressHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => Promise<any> | any;
+
+export class AuthController {
+  private authService: AuthService;
+
+  constructor() {
+    this.authService = new AuthService();
   }
-}
 
-export async function login(req: Request, res: Response) {
-  try {
-    const { email, password } = req.body;
-    const { user, token } = await authService.login(email, password);
-    res.status(201).json({ message: "Login bem-sucedido", user, token });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+  public register: ExpressHandler = async (req, res) => {
+    try {
+      const user = await this.authService.register(req.body);
+      return res.status(201).json({
+        message: "User  registered successfully",
+        user,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        error:
+          error instanceof Error ? error.message : "Error registering user",
+      });
+    }
+  };
+
+  public login: ExpressHandler = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const { user, token } = await this.authService.login(email, password);
+      return res.status(200).json({
+        message: "Login successful",
+        user,
+        token,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        error: error instanceof Error ? error.message : "Error logging in",
+      });
+    }
+  };
+
+  public protectedRoute: ExpressHandler = (req, res) => {
+    try {
+      const user = this.extractUserFromRequest(req);
+      return res.status(200).json({
+        message: "Protected content",
+        user,
+      });
+    } catch (error) {
+      return res.status(401).json({
+        error: "Unauthorized",
+      });
+    }
+  };
+
+  private extractUserFromRequest(req: Request): any {
+    const user = (req as any).user;
+    if (!user) {
+      throw new Error("User  not found in the request");
+    }
+    return user;
   }
-}
-
-export function protectedRoute(req: Request, res: Response) {
-  const user = (req as any).user;
-  res.json({ message: "Conteúdo protegido", user });
 }
