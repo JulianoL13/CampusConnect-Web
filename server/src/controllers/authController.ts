@@ -12,9 +12,15 @@ export async function register(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
   try {
-    const user = await authService.login(req.body.email, req.body.password);
-    res.status(201).json({ message: "Login bem-sucedido" });
+    const { email, password } = req.body;
+    const { user, token } = await authService.login(email, password);
+    res.status(201).json({ message: "Login bem-sucedido", user, token });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
+}
+
+export function protectedRoute(req: Request, res: Response) {
+  const user = (req as any).user;
+  res.json({ message: "Conteúdo protegido", user });
 }
