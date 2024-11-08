@@ -9,7 +9,7 @@ export default function App() {
     <div className='w-full h-screen font-inter'>
       <BrowserRouter>
         <Routes>
-          <Route path='/login' element={<Login />} />
+          <Route path='/'  element={<Login />} />
           <Route path='/forum' element={<Forum />} />
           <Route path='/perfil' element={<EditarPerfil />} />
         </Routes>
